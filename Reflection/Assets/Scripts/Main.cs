@@ -47,16 +47,43 @@ public class Main : MonoBehaviour
         }
         else if (other.gameObject.tag == "coin")
         {
-            Controller.UIStatic.collectMissionMaxScore.text = (Convert.ToInt32(Controller.UIStatic.collectMissionMaxScore.text) - 1).ToString();
             Destroy(other.gameObject);
-            //passLevel maxBallCount
-            if (0 == Convert.ToInt32(Controller.UIStatic.collectMissionMaxScore.text))
+            if (!Controller.freeModeFlag)
             {
-                speed = 0;
-                Controller.enemySpeed = 0;
-                Controller.nextEnableButton.enabled = true;
-                PlayerPrefs.SetInt("Level-" + Controller.activeLevel, Controller.activeLevel);
-                StartCoroutine(PassLevel());
+                if (Convert.ToInt32(Controller.UIStatic.collectMissionGreenMaxScore.text) != 0)
+                {
+                    Controller.UIStatic.collectMissionGreenMaxScore.text = (Convert.ToInt32(Controller.UIStatic.collectMissionGreenMaxScore.text) - 1).ToString();
+                }
+                //passLevel maxBallCount
+                if (Convert.ToInt32(Controller.UIStatic.collectMissionGreenMaxScore.text) == 0 && Convert.ToInt32(Controller.UIStatic.collectMissionBonusBallMaxScore.text) == 0)
+                {
+                    speed = 0;
+                    Controller.enemySpeed = 0;
+                    Controller.nextEnableButton.enabled = true;
+                    PlayerPrefs.SetInt("Level-" + Controller.activeLevel, Controller.activeLevel);
+                    StartCoroutine(PassLevel());
+                }
+
+            }
+        }
+        else if (other.gameObject.tag == "bonusball")
+        {
+            Destroy(other.gameObject);
+            if (!Controller.freeModeFlag)
+            {
+                if (Convert.ToInt32(Controller.UIStatic.collectMissionBonusBallMaxScore.text) != 0)
+                {
+                    Controller.UIStatic.collectMissionBonusBallMaxScore.text = (Convert.ToInt32(Controller.UIStatic.collectMissionBonusBallMaxScore.text) - 1).ToString();
+                }
+                //passLevel maxBallCount
+                if (Convert.ToInt32(Controller.UIStatic.collectMissionGreenMaxScore.text) == 0 && Convert.ToInt32(Controller.UIStatic.collectMissionBonusBallMaxScore.text) == 0)
+                {
+                    speed = 0;
+                    Controller.enemySpeed = 0;
+                    Controller.nextEnableButton.enabled = true;
+                    PlayerPrefs.SetInt("Level-" + Controller.activeLevel, Controller.activeLevel);
+                    StartCoroutine(PassLevel());
+                }
             }
         }
     }
@@ -66,7 +93,8 @@ public class Main : MonoBehaviour
         Controller.nextLevelX.SetActive(false);
         Controller.UIStatic.startPanel.SetActive(true);
         Controller.UIStatic.stagesButton.SetActive(true);
-        Controller.UIStatic.collectMission.SetActive(false);
+        Controller.UIStatic.collectGreen.SetActive(false);
+        Controller.UIStatic.collectBonusBall.SetActive(false);
         StopAllCoroutines();
         score.text = "0";
         foreach (GameObject item in Controller.spheres)
@@ -84,7 +112,8 @@ public class Main : MonoBehaviour
         {
             Controller.UIStatic.startPanel.SetActive(true);
             Controller.UIStatic.freeModeButtons.SetActive(true);
-            Controller.UIStatic.collectMission.SetActive(false);
+            Controller.UIStatic.collectGreen.SetActive(false);
+            Controller.UIStatic.collectBonusBall.SetActive(false);
             StopAllCoroutines();
             score.text = "0";
         }
@@ -92,7 +121,8 @@ public class Main : MonoBehaviour
         {
             Controller.UIStatic.startPanel.SetActive(true);
             Controller.UIStatic.stagesButton.SetActive(true);
-            Controller.UIStatic.collectMission.SetActive(false);
+            Controller.UIStatic.collectGreen.SetActive(false);
+            Controller.UIStatic.collectBonusBall.SetActive(false);
             StopAllCoroutines();
             score.text = "0";
         }

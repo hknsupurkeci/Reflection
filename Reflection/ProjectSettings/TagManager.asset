@@ -6,6 +6,7 @@ TagManager:
   tags:
   - coin
   - enemy
+  - bonusball
   layers:
   - Default
   - TransparentFX

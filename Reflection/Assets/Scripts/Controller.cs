@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-public enum Modes { Easy, Normal, Hard };
+public enum Modes { Easy, Normal, Hard, VeryHard};
 
 public class Controller : MonoBehaviour
 {
@@ -18,7 +18,8 @@ public class Controller : MonoBehaviour
         public float characterSpeed;
         public float enemySpeed;
         public float gameTime;
-        public int maxBallCount;
+        public int greenBallCount;
+        public int bonusBallCount;
         public string levelId;
     }
     [System.Serializable]
@@ -29,15 +30,21 @@ public class Controller : MonoBehaviour
         public GameObject startPanel;
         public GameObject freeModeButtons;
         public GameObject stagesButton;
-        public GameObject collectMission;
-        public Text collectMissionMaxScore;
-    }
+        public GameObject collectGreen;
+        public GameObject collectBonusBall;
+        public Text collectMissionGreenMaxScore;
+        public Text collectMissionBonusBallMaxScore;
 
+    }
+    #region Variables
     public List<Levels> levels;
     public List<GameObject> positionRight = new List<GameObject>();
     public List<GameObject> positionLeft = new List<GameObject>();
-    public List<GameObject> positionUp = new List<GameObject>();
-    public List<GameObject> positionDown = new List<GameObject>();
+    public GameObject positionUpRight;
+    public GameObject positionUpLeft;
+    public GameObject positionDownRight;
+    public GameObject positionDownLeft;
+
     public List<Material> skyboxes = new List<Material>();
     public List<GameObject> sphere;
 
@@ -46,13 +53,15 @@ public class Controller : MonoBehaviour
 
     public static GameObject nextLevelX;
     public static Button nextEnableButton;
-    public static List<GameObject> spheres = new List<GameObject> ();
+    public static List<GameObject> spheres = new List<GameObject>();
     public static float enemySpeed = 12f;
     public static float gameTime;
-    public static int maxBallCount = 0;
+    public static int greenBallCount = 0;
+    public static int bonusBallCount = 0;
+    public static int activeLevel = 0;
     public static bool endFlag = false;
     public static bool freeModeFlag = false;
-    public static int activeLevel = 0;
+    #endregion
 
     #region Sphere Create
     private void Awake()
@@ -78,79 +87,99 @@ public class Controller : MonoBehaviour
         {
             int rndRight = random.Next(0, 3);
             int rndLeft = random.Next(0, 3);
-            int sphereIndex = random.Next(0, 2);
             switch (modes)
             {
                 case Modes.Easy:
                     {
-                        spheres.Add(Instantiate(sphere[sphereIndex], positionRight[rndRight].transform.position, Quaternion.Euler(90, 0, 0)));
-                        StartCoroutine(MoveSphereRight(spheres[spheres.Count-1]));
+                        spheres.Add(Instantiate(sphere[random.Next(0, sphere.Count)], positionRight[rndRight].transform.position, Quaternion.Euler(90, 0, 0)));
+                        StartCoroutine(MoveSphereRight(spheres[spheres.Count - 1]));
                         break;
                     }
                 case Modes.Normal:
                     {
-                        spheres.Add(Instantiate(sphere[random.Next(0, 2)], positionRight[rndRight].transform.position, Quaternion.Euler(90, 0, 0)));
+                        spheres.Add(Instantiate(sphere[random.Next(0, sphere.Count)], positionRight[rndRight].transform.position, Quaternion.Euler(90, 0, 0)));
                         StartCoroutine(MoveSphereRight(spheres[spheres.Count - 1]));
-                        spheres.Add(Instantiate(sphere[random.Next(0, 2)], positionLeft[rndLeft].transform.position, Quaternion.Euler(90, 0, 0)));
+                        spheres.Add(Instantiate(sphere[random.Next(0, sphere.Count)], positionLeft[rndLeft].transform.position, Quaternion.Euler(90, 0, 0)));
                         StartCoroutine(MoveSphereLeft(spheres[spheres.Count - 1]));
                         break;
                     }
                 case Modes.Hard:
                     {
-                        spheres.Add(Instantiate(sphere[random.Next(0, 2)], positionRight[rndRight].transform.position, Quaternion.Euler(90, 0, 0)));
+                        spheres.Add(Instantiate(sphere[random.Next(0, sphere.Count)], positionRight[rndRight].transform.position, Quaternion.Euler(90, 0, 0)));
                         StartCoroutine(MoveSphereRight(spheres[spheres.Count - 1]));
-                        spheres.Add(Instantiate(sphere[random.Next(0, 2)], positionLeft[rndLeft].transform.position, Quaternion.Euler(90, 0, 0)));
+                        spheres.Add(Instantiate(sphere[random.Next(0, sphere.Count)], positionLeft[rndLeft].transform.position, Quaternion.Euler(90, 0, 0)));
                         StartCoroutine(MoveSphereLeft(spheres[spheres.Count - 1]));
-                        spheres.Add(Instantiate(sphere[random.Next(0, 2)], positionUp[rndRight].transform.position, Quaternion.Euler(90, 0, 0)));
-                        StartCoroutine(MoveSphereUp(spheres[spheres.Count - 1]));
-                        //StartCoroutine(MoveSphereDown(Instantiate(sphere[random.Next(0, 2)], positionDown[rndLeft].transform.position, Quaternion.Euler(90, 0, 0))));
+                        spheres.Add(Instantiate(sphere[random.Next(0, sphere.Count)], positionUpRight.transform.position, Quaternion.Euler(90, 0, 0)));
+                        StartCoroutine(MoveSphereUpRight(spheres[spheres.Count - 1]));
+                        break;
+                    }
+                case Modes.VeryHard:
+                    {
+                        spheres.Add(Instantiate(sphere[random.Next(0, sphere.Count)], positionRight[rndRight].transform.position, Quaternion.Euler(90, 0, 0)));
+                        StartCoroutine(MoveSphereRight(spheres[spheres.Count - 1]));
+                        spheres.Add(Instantiate(sphere[random.Next(0, sphere.Count)], positionLeft[rndLeft].transform.position, Quaternion.Euler(90, 0, 0)));
+                        StartCoroutine(MoveSphereLeft(spheres[spheres.Count - 1]));
+                        //information; Very Hard modunda üstten bir adet aþþaðýdan bir adet gelmesini istiyorum, bu yüzden bir adet 0 veya 1 int deðer alýyorum
+                        //bu deðere göre ürünü oluþturup daha sonra StartCoroutine ile çalýþtýrýyorum.
+                        //burada gönderdiðim bool array Corutine içinde sphere e yeni pozisyon atarken x ve y sine posizyonlarýna göre belirli deðerleri atamam gerekiyor.
+                        //aldýðý bool deðerlere göre (-,-)(+,+)(+,-)(-,+) deðerlerini alabiliyor. (true==+)(false==-)
+                        //bu iþlemi de aþþaðýdaki OperationControl fonksiyonunda yapýyor.
+                        //up--
+                        int x = random.Next(0, 2);
+                        spheres.Add(Instantiate(sphere[random.Next(0, sphere.Count)], x == 0 ? positionUpRight.transform.position : positionUpLeft.transform.position, Quaternion.Euler(90, 0, 0)));
+                        StartCoroutine(MoveVeryHardMode(spheres[spheres.Count - 1], x == 0 ? new bool[] { false, false } : new bool[] { true, false }));
+                        //down--
+                        x = random.Next(0, 2);
+                        spheres.Add(Instantiate(sphere[random.Next(0, sphere.Count)], x == 0 ? positionDownRight.transform.position : positionDownLeft.transform.position, Quaternion.Euler(90, 0, 0)));
+                        StartCoroutine(MoveVeryHardMode(spheres[spheres.Count - 1], x == 0 ? new bool[] { false, true } : new bool[] { true, true }));
+
                         break;
                     }
             }
             yield return new WaitForSeconds(1f);
         }
     }
-    IEnumerator MoveSphereRight(GameObject _sphere/*, float speedX, float speedY, float speedZ*/)
+    IEnumerator MoveSphereRight(GameObject _sphere)
     {
         while (true)
         {
             _sphere.transform.position = new Vector3(
                 _sphere.transform.position.x - enemySpeed * Time.deltaTime,
-                _sphere.transform.position.y, /*+ speedY * Time.deltaTime,*/
-                _sphere.transform.position.z /*+ speedZ * Time.deltaTime*/);
+                _sphere.transform.position.y,
+                _sphere.transform.position.z);
             yield return null;
         }
     }
-    IEnumerator MoveSphereLeft(GameObject _sphere/*, float speedX, float speedY, float speedZ*/)
+    IEnumerator MoveSphereLeft(GameObject _sphere)
     {
         while (true)
         {
             _sphere.transform.position = new Vector3(
                 _sphere.transform.position.x + enemySpeed * Time.deltaTime,
-                _sphere.transform.position.y, /*+ speedY * Time.deltaTime,*/
-                _sphere.transform.position.z /*+ speedZ * Time.deltaTime*/);
+                _sphere.transform.position.y,
+                _sphere.transform.position.z);
             yield return null;
         }
     }
-    IEnumerator MoveSphereUp(GameObject _sphere/*, float speedX, float speedY, float speedZ*/)
+    IEnumerator MoveSphereUpRight(GameObject _sphere)
     {
         while (true)
         {
             _sphere.transform.position = new Vector3(
                 _sphere.transform.position.x - (enemySpeed / 2) * Time.deltaTime,
-                _sphere.transform.position.y - (enemySpeed / 2) * Time.deltaTime, /*+ speedY * Time.deltaTime,*/
-                _sphere.transform.position.z /*+ speedZ * Time.deltaTime*/);
+                _sphere.transform.position.y - (enemySpeed / 2) * Time.deltaTime,
+                _sphere.transform.position.z);
             yield return null;
         }
     }
-    IEnumerator MoveSphereDown(GameObject _sphere/*, float speedX, float speedY, float speedZ*/)
+    IEnumerator MoveVeryHardMode(GameObject _sphere, bool[] operation)
     {
         while (true)
         {
             _sphere.transform.position = new Vector3(
-                _sphere.transform.position.x + (enemySpeed / 2) * Time.deltaTime,
-                _sphere.transform.position.y + (enemySpeed / 2) * Time.deltaTime, /*+ speedY * Time.deltaTime,*/
-                _sphere.transform.position.z /*+ speedZ * Time.deltaTime*/);
+                OperationControl(_sphere.transform.position.x, (enemySpeed / 2) * Time.deltaTime, operation[0]),
+                OperationControl(_sphere.transform.position.y, (enemySpeed / 2) * Time.deltaTime, operation[1]),
+                _sphere.transform.position.z);
             yield return null;
         }
     }
@@ -168,17 +197,30 @@ public class Controller : MonoBehaviour
 
         activeLevel = _id;
         freeModeFlag = false;
-        maxBallCount = levels[_id-1].maxBallCount;
-        nextLevelX = levels[_id-1].levelX;
+        greenBallCount = levels[_id - 1].greenBallCount;
+        bonusBallCount = levels[_id - 1].bonusBallCount;
+        nextLevelX = levels[_id - 1].levelX;
         Main.speed = levels[_id - 1].characterSpeed;
         enemySpeed = levels[_id - 1].enemySpeed;
         gameTime = levels[_id - 1].gameTime;
 
-        if(gameTime == 0)
+        if(gameTime == 0 && bonusBallCount == 0)
         {
-            UI.collectMission.SetActive(true);
-            UI.collectMissionMaxScore.text = maxBallCount.ToString();
-        } 
+            UI.collectGreen.SetActive(true);
+            UI.collectMissionGreenMaxScore.text = greenBallCount.ToString();
+        }
+        else if(gameTime == 0 && greenBallCount == 0)
+        {
+            UI.collectBonusBall.SetActive(true);
+            UI.collectMissionBonusBallMaxScore.text = bonusBallCount.ToString();
+        }
+        else if (gameTime == 0)
+        {
+            UI.collectGreen.SetActive(true);
+            UI.collectMissionGreenMaxScore.text = greenBallCount.ToString();
+            UI.collectBonusBall.SetActive(true);
+            UI.collectMissionBonusBallMaxScore.text = bonusBallCount.ToString();
+        }
         StartCoroutine(CreateSphere(levels[_id-1].mode));
     }
     public void Stages()
@@ -231,6 +273,16 @@ public class Controller : MonoBehaviour
         UI.startPanel.SetActive(false);
         StartCoroutine(CreateSphere(Modes.Hard));
     }
+    public void FreeModeVeryHard()
+    {
+        DeleteSpheres();
+        StopAllCoroutines();
+        enemySpeed = 12;
+        Main.speed = 250;
+        freeModeFlag = true;
+        UI.startPanel.SetActive(false);
+        StartCoroutine(CreateSphere(Modes.VeryHard));
+    }
     public void ScreenOne()
     {
         RenderSettings.skybox = skyboxes[0];
@@ -264,6 +316,11 @@ public class Controller : MonoBehaviour
         {
             Destroy(item);
         }
+    }
+
+    private float OperationControl(float valueFirst, float valueSecond, bool type)
+    {
+        return type ? valueFirst + valueSecond : valueFirst - valueSecond;
     }
 }
 
