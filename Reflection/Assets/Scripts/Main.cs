@@ -94,7 +94,6 @@ public class Main : MonoBehaviour
         Controller.UIStatic.startPanel.SetActive(true);
         Controller.UIStatic.stagesButton.SetActive(true);
         Controller.UIStatic.collectGreen.SetActive(false);
-        Controller.UIStatic.collectBonusBall.SetActive(false);
         StopAllCoroutines();
         score.text = "0";
         foreach (GameObject item in Controller.spheres)
@@ -113,7 +112,6 @@ public class Main : MonoBehaviour
             Controller.UIStatic.startPanel.SetActive(true);
             Controller.UIStatic.freeModeButtons.SetActive(true);
             Controller.UIStatic.collectGreen.SetActive(false);
-            Controller.UIStatic.collectBonusBall.SetActive(false);
             StopAllCoroutines();
             score.text = "0";
         }
@@ -122,7 +120,6 @@ public class Main : MonoBehaviour
             Controller.UIStatic.startPanel.SetActive(true);
             Controller.UIStatic.stagesButton.SetActive(true);
             Controller.UIStatic.collectGreen.SetActive(false);
-            Controller.UIStatic.collectBonusBall.SetActive(false);
             StopAllCoroutines();
             score.text = "0";
         }

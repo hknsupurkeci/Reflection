@@ -31,7 +31,6 @@ public class Controller : MonoBehaviour
         public GameObject freeModeButtons;
         public GameObject stagesButton;
         public GameObject collectGreen;
-        public GameObject collectBonusBall;
         public Text collectMissionGreenMaxScore;
         public Text collectMissionBonusBallMaxScore;
 
@@ -211,14 +210,13 @@ public class Controller : MonoBehaviour
         }
         else if(gameTime == 0 && greenBallCount == 0)
         {
-            UI.collectBonusBall.SetActive(true);
+            UI.collectGreen.SetActive(true);
             UI.collectMissionBonusBallMaxScore.text = bonusBallCount.ToString();
         }
         else if (gameTime == 0)
         {
             UI.collectGreen.SetActive(true);
             UI.collectMissionGreenMaxScore.text = greenBallCount.ToString();
-            UI.collectBonusBall.SetActive(true);
             UI.collectMissionBonusBallMaxScore.text = bonusBallCount.ToString();
         }
         StartCoroutine(CreateSphere(levels[_id-1].mode));
