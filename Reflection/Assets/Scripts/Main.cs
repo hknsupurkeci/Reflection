@@ -2,18 +2,22 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Main : MonoBehaviour
 {
     //public Controller.UIGameObjects UI;
+    [SerializeField] public ParticleSystem explosion;
+    public AudioSource coinAudioSource;
+    public AudioClip coinSound, gameOverSound;
     Touch touch;
     bool wayFlag = true;
     public Text score;
     public static float speed = 200;
+    Rigidbody rigidbody;
     void Start()
     {
+        rigidbody = GetComponent<Rigidbody>();
         transform.RotateAround(Vector3.zero, transform.forward, speed * Time.deltaTime);
     }
     void Update()
@@ -28,11 +32,11 @@ public class Main : MonoBehaviour
     }
     private void Move()
     {
-        if (/*(touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Began) && */wayFlag)
+        if (wayFlag)
         {
             transform.RotateAround(Vector3.zero, transform.forward, speed * Time.deltaTime);
         }
-        else if (/*(touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Began) && */!wayFlag)
+        else if (!wayFlag)
         {
             transform.RotateAround(Vector3.zero, -transform.forward, speed * Time.deltaTime);
         }
@@ -41,12 +45,17 @@ public class Main : MonoBehaviour
     {
         if (other.gameObject.tag == "enemy")
         {
+            coinAudioSource.PlayOneShot(gameOverSound, 0.4f);
             speed = 0;
             Controller.enemySpeed = 0;
+            explosion.Play();
+            rigidbody.useGravity = true;
+            rigidbody.isKinematic = false;
             StartCoroutine(GameOver());
         }
         else if (other.gameObject.tag == "coin")
         {
+            coinAudioSource.PlayOneShot(coinSound, 0.7f);
             Destroy(other.gameObject);
             if (!Controller.freeModeFlag)
             {
@@ -68,6 +77,7 @@ public class Main : MonoBehaviour
         }
         else if (other.gameObject.tag == "bonusball")
         {
+            coinAudioSource.PlayOneShot(coinSound, 0.7f);
             Destroy(other.gameObject);
             if (!Controller.freeModeFlag)
             {
@@ -90,6 +100,7 @@ public class Main : MonoBehaviour
     IEnumerator PassLevel()
     {
         yield return new WaitForSeconds(3f);
+
         Controller.nextLevelX.SetActive(false);
         Controller.UIStatic.startPanel.SetActive(true);
         Controller.UIStatic.stagesButton.SetActive(true);
@@ -100,13 +111,11 @@ public class Main : MonoBehaviour
         {
             Destroy(item);
         }
-        //Controller.enemySpeed = 10;
     }
     IEnumerator GameOver()
     {
         yield return new WaitForSeconds(3f);
-        //Controller.nextLevelX.SetActive(false);
-
+        
         if (Controller.freeModeFlag)
         {
             Controller.UIStatic.startPanel.SetActive(true);
@@ -123,10 +132,14 @@ public class Main : MonoBehaviour
             StopAllCoroutines();
             score.text = "0";
         }
+        rigidbody.useGravity = false;
+        rigidbody.isKinematic = true;
+        rigidbody.transform.position = new Vector3(2.5f, 0, 0);
+        rigidbody.transform.rotation = Quaternion.identity;
+        speed = 200;
         foreach (GameObject item in Controller.spheres)
         {
             Destroy(item);
         }
-        //Controller.enemySpeed = 10;
     }
 }

@@ -8,7 +8,6 @@ public enum Modes { Easy, Normal, Hard, VeryHard};
 
 public class Controller : MonoBehaviour
 {
-    
     [System.Serializable] public class Levels
     {
         public Modes mode;
@@ -188,6 +187,9 @@ public class Controller : MonoBehaviour
     {
         DeleteSpheres();
         StopAllCoroutines();
+
+        RenderSettings.skybox = levels[_id - 1].skyboxMaterial;
+        DynamicGI.UpdateEnvironment();
 
         nextEnableButton = levels[_id - 1].enableButton;
 
