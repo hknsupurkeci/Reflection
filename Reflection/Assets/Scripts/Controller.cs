@@ -21,6 +21,7 @@ public class Controller : MonoBehaviour
         public int bonusBallCount;
         public string levelId;
     }
+
     [System.Serializable]
     public class UIGameObjects
     {
@@ -283,31 +284,31 @@ public class Controller : MonoBehaviour
         UI.startPanel.SetActive(false);
         StartCoroutine(CreateSphere(Modes.VeryHard));
     }
-    public void ScreenOne()
-    {
-        RenderSettings.skybox = skyboxes[0];
-        DynamicGI.UpdateEnvironment();
-    }
-    public void ScreenTwo()
-    {
-        RenderSettings.skybox = skyboxes[1];
-        DynamicGI.UpdateEnvironment();
-    }
-    public void ScreenThree()
-    {
-        RenderSettings.skybox = skyboxes[2];
-        DynamicGI.UpdateEnvironment();
-    }
-    public void ScreenFour()
-    {
-        RenderSettings.skybox = skyboxes[3];
-        DynamicGI.UpdateEnvironment();
-    }
-    public void ScreenFive()
-    {
-        RenderSettings.skybox = skyboxes[4];
-        DynamicGI.UpdateEnvironment();
-    }
+    //public void ScreenOne()
+    //{
+    //    RenderSettings.skybox = skyboxes[0];
+    //    DynamicGI.UpdateEnvironment();
+    //}
+    //public void ScreenTwo()
+    //{
+    //    RenderSettings.skybox = skyboxes[1];
+    //    DynamicGI.UpdateEnvironment();
+    //}
+    //public void ScreenThree()
+    //{
+    //    RenderSettings.skybox = skyboxes[2];
+    //    DynamicGI.UpdateEnvironment();
+    //}
+    //public void ScreenFour()
+    //{
+    //    RenderSettings.skybox = skyboxes[3];
+    //    DynamicGI.UpdateEnvironment();
+    //}
+    //public void ScreenFive()
+    //{
+    //    RenderSettings.skybox = skyboxes[4];
+    //    DynamicGI.UpdateEnvironment();
+    //}
     #endregion
 
     private void DeleteSpheres()

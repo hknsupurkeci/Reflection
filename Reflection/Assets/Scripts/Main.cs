@@ -14,9 +14,16 @@ public class Main : MonoBehaviour
     bool wayFlag = true;
     public Text score;
     public static float speed = 200;
+    float gameOverSpeed;
+    float gameOverEnemySpeed;
     Rigidbody rigidbody;
+    public static bool isAdmob = false;
+    public GameObject continueObject;
+
+    Coroutine stop;
     void Start()
     {
+        
         rigidbody = GetComponent<Rigidbody>();
         transform.RotateAround(Vector3.zero, transform.forward, speed * Time.deltaTime);
     }
@@ -45,13 +52,16 @@ public class Main : MonoBehaviour
     {
         if (other.gameObject.tag == "enemy")
         {
-            coinAudioSource.PlayOneShot(gameOverSound, 0.4f);
+            other.gameObject.GetComponent<SphereCollider>().enabled = false;
+            coinAudioSource.PlayOneShot(gameOverSound, 0.7f);
+            explosion.Play();
+            gameOverSpeed = speed;
+            gameOverEnemySpeed = Controller.enemySpeed;
             speed = 0;
             Controller.enemySpeed = 0;
-            explosion.Play();
             rigidbody.useGravity = true;
             rigidbody.isKinematic = false;
-            StartCoroutine(GameOver());
+            stop = StartCoroutine(GameOver());
         }
         else if (other.gameObject.tag == "coin")
         {
@@ -114,8 +124,18 @@ public class Main : MonoBehaviour
     }
     IEnumerator GameOver()
     {
-        yield return new WaitForSeconds(3f);
-        
+        if (!Controller.freeModeFlag)
+        {
+            continueObject.SetActive(true);
+            yield return new WaitForSeconds(10f);
+        }
+        else
+            yield return new WaitForSeconds(2f);
+        GameOverParameters();
+    }
+
+    private void GameOverParameters()
+    {
         if (Controller.freeModeFlag)
         {
             Controller.UIStatic.startPanel.SetActive(true);
@@ -126,20 +146,49 @@ public class Main : MonoBehaviour
         }
         else
         {
-            Controller.UIStatic.startPanel.SetActive(true);
-            Controller.UIStatic.stagesButton.SetActive(true);
-            Controller.UIStatic.collectGreen.SetActive(false);
-            StopAllCoroutines();
-            score.text = "0";
+            if (!isAdmob)
+            {
+                Controller.UIStatic.startPanel.SetActive(true);
+                Controller.UIStatic.stagesButton.SetActive(true);
+                Controller.UIStatic.collectGreen.SetActive(false);
+                StopAllCoroutines();
+                score.text = "0";
+            }
+            else
+            {
+                Controller.enemySpeed = gameOverEnemySpeed;
+            }
         }
         rigidbody.useGravity = false;
         rigidbody.isKinematic = true;
         rigidbody.transform.position = new Vector3(2.5f, 0, 0);
         rigidbody.transform.rotation = Quaternion.identity;
-        speed = 200;
+        speed = gameOverSpeed;
+        ContinueScript.sliderValue = 0;
+
         foreach (GameObject item in Controller.spheres)
         {
             Destroy(item);
         }
+
+        continueObject.SetActive(false);
+    }
+
+    public void AdButton()
+    {
+        //uzun reklam videosu buraya gelecek.
+        //playerprefs içinde int bir count olacak nerede ölürse ölsün 2 ölmeden sonra reklam gelecek.
+        StopCoroutine(stop);
+        isAdmob = true;
+        GameOverParameters();
+        isAdmob = false;
+        //continueObject.SetActive(false);
+    }
+    public void NoThanksButton()
+    {
+        isAdmob = false;
+        GameOverParameters();
+        //continueObject.SetActive(false);
+
     }
 }
