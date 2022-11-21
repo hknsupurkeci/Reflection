@@ -112,11 +112,11 @@ public class Main : MonoBehaviour
         yield return new WaitForSeconds(3f);
 
         Controller.nextLevelX.SetActive(false);
-        Controller.UIStatic.startPanel.SetActive(true);
-        Controller.UIStatic.stagesButton.SetActive(true);
-        Controller.UIStatic.collectGreen.SetActive(false);
+        MainScreenSet();
         StopAllCoroutines();
         score.text = "0";
+        speed = gameOverSpeed;
+
         foreach (GameObject item in Controller.spheres)
         {
             Destroy(item);
@@ -138,9 +138,7 @@ public class Main : MonoBehaviour
     {
         if (Controller.freeModeFlag)
         {
-            Controller.UIStatic.startPanel.SetActive(true);
-            Controller.UIStatic.freeModeButtons.SetActive(true);
-            Controller.UIStatic.collectGreen.SetActive(false);
+            MainScreenSet();
             StopAllCoroutines();
             score.text = "0";
         }
@@ -148,9 +146,7 @@ public class Main : MonoBehaviour
         {
             if (!isAdmob)
             {
-                Controller.UIStatic.startPanel.SetActive(true);
-                Controller.UIStatic.stagesButton.SetActive(true);
-                Controller.UIStatic.collectGreen.SetActive(false);
+                MainScreenSet();
                 StopAllCoroutines();
                 score.text = "0";
             }
@@ -159,10 +155,13 @@ public class Main : MonoBehaviour
                 Controller.enemySpeed = gameOverEnemySpeed;
             }
         }
+        #region Character rigidbody process
         rigidbody.useGravity = false;
         rigidbody.isKinematic = true;
         rigidbody.transform.position = new Vector3(2.5f, 0, 0);
         rigidbody.transform.rotation = Quaternion.identity;
+        #endregion
+
         speed = gameOverSpeed;
         ContinueScript.sliderValue = 0;
 
@@ -170,7 +169,6 @@ public class Main : MonoBehaviour
         {
             Destroy(item);
         }
-
         continueObject.SetActive(false);
     }
 
@@ -190,5 +188,11 @@ public class Main : MonoBehaviour
         GameOverParameters();
         //continueObject.SetActive(false);
 
+    }
+    public void MainScreenSet()
+    {
+        Controller.UIStatic.startPanel.SetActive(true);
+        Controller.UIStatic.stagesButton.SetActive(true);
+        Controller.UIStatic.collectGreen.SetActive(false);
     }
 }
