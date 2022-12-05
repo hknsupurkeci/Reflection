@@ -12,18 +12,16 @@ public class Main : MonoBehaviour
     public AudioClip coinSound, gameOverSound;
     Touch touch;
     bool wayFlag = true;
-    public Text score;
     public static float speed = 200;
     float gameOverSpeed;
     float gameOverEnemySpeed;
     Rigidbody rigidbody;
     public static bool isAdmob = false;
     public GameObject continueObject;
-
+    int score = 0;
     Coroutine stop;
     void Start()
     {
-        
         rigidbody = GetComponent<Rigidbody>();
         transform.RotateAround(Vector3.zero, transform.forward, speed * Time.deltaTime);
     }
@@ -82,7 +80,12 @@ public class Main : MonoBehaviour
                     PlayerPrefs.SetInt("Level-" + Controller.activeLevel, Controller.activeLevel);
                     StartCoroutine(PassLevel());
                 }
-
+            }
+            //Freemode
+            else
+            {
+                score++;
+                Controller.UIStatic.freeModeMaxScore.text = score.ToString();
             }
         }
         else if (other.gameObject.tag == "bonusball")
@@ -105,6 +108,12 @@ public class Main : MonoBehaviour
                     StartCoroutine(PassLevel());
                 }
             }
+            //Free mode
+            else
+            {
+                score += 2;
+                Controller.UIStatic.freeModeMaxScore.text = score.ToString();
+            }
         }
     }
     IEnumerator PassLevel()
@@ -112,9 +121,8 @@ public class Main : MonoBehaviour
         yield return new WaitForSeconds(3f);
 
         Controller.nextLevelX.SetActive(false);
-        MainScreenSet();
+        MainScreenSet(true);
         StopAllCoroutines();
-        score.text = "0";
         speed = gameOverSpeed;
 
         foreach (GameObject item in Controller.spheres)
@@ -138,17 +146,26 @@ public class Main : MonoBehaviour
     {
         if (Controller.freeModeFlag)
         {
-            MainScreenSet();
+            MainScreenSet(false);
             StopAllCoroutines();
-            score.text = "0";
+            if (score > Controller.maxScore)
+            {
+                Controller.maxScore = score;
+                PlayerPrefs.SetInt("maxScore", score);
+                Controller.UIStatic.freeModeMaxScore.text = score.ToString();
+            }
+            else
+            {
+                Controller.UIStatic.freeModeMaxScore.text = Controller.maxScore.ToString();
+            }
+            score = 0;
         }
         else
         {
             if (!isAdmob)
             {
-                MainScreenSet();
+                MainScreenSet(true);
                 StopAllCoroutines();
-                score.text = "0";
             }
             else
             {
@@ -189,10 +206,13 @@ public class Main : MonoBehaviour
         //continueObject.SetActive(false);
 
     }
-    public void MainScreenSet()
+    public void MainScreenSet(bool stagesFlag)
     {
         Controller.UIStatic.startPanel.SetActive(true);
-        Controller.UIStatic.stagesButton.SetActive(true);
         Controller.UIStatic.collectGreen.SetActive(false);
+        if(stagesFlag)
+            Controller.UIStatic.stagesButton.SetActive(true);
+        else
+            Controller.UIStatic.stagesButton.SetActive(false);
     }
 }

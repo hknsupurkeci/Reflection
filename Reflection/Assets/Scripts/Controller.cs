@@ -30,10 +30,11 @@ public class Controller : MonoBehaviour
         public GameObject startPanel;
         public GameObject freeModeButtons;
         public GameObject stagesButton;
+        public GameObject freeModMaxScoreButton;
         public GameObject collectGreen;
         public Text collectMissionGreenMaxScore;
         public Text collectMissionBonusBallMaxScore;
-
+        public Text freeModeMaxScore;
     }
     #region Variables
     public List<Levels> levels;
@@ -60,16 +61,20 @@ public class Controller : MonoBehaviour
     public static int activeLevel = 0;
     public static bool endFlag = false;
     public static bool freeModeFlag = false;
+    public static int maxScore = 0;
     #endregion
 
     #region Sphere Create
     private void Awake()
     {
         //PlayerPrefs.DeleteAll();
+        maxScore = PlayerPrefs.GetInt("maxScore", 0);
+        
         System.Random random = new System.Random();
         RenderSettings.skybox = skyboxes[random.Next(0, skyboxes.Count)];
         DynamicGI.UpdateEnvironment();
         UIStatic = UI;
+        UIStatic.freeModeMaxScore.text = maxScore.ToString();
         for (int i = 1; i < levels.Count; i++)
         {
             if (PlayerPrefs.GetInt("Level-" + levels[i-1].levelId, 0) != 0)
@@ -238,16 +243,19 @@ public class Controller : MonoBehaviour
     {
         UI.startButtons.SetActive(false);
         UI.freeModeButtons.SetActive(true);
+        UI.freeModMaxScoreButton.SetActive(true);
     }
     public void FreeModeBack()
     {
         UI.startButtons.SetActive(true);
         UI.freeModeButtons.SetActive(false);
+        UI.freeModMaxScoreButton.SetActive(false);
     }
     public void FreeModeEasy()
     {
         DeleteSpheres();
         StopAllCoroutines();
+        UIStatic.freeModeMaxScore.text = "0";
         enemySpeed = 12;
         Main.speed = 200;
         freeModeFlag = true;
@@ -258,6 +266,7 @@ public class Controller : MonoBehaviour
     {
         DeleteSpheres();
         StopAllCoroutines();
+        UIStatic.freeModeMaxScore.text = "0";
         enemySpeed = 12;
         Main.speed = 200;
         freeModeFlag = true;
@@ -268,6 +277,7 @@ public class Controller : MonoBehaviour
     {
         DeleteSpheres();
         StopAllCoroutines();
+        UIStatic.freeModeMaxScore.text = "0";
         enemySpeed = 12;
         Main.speed = 200;
         freeModeFlag = true;
@@ -278,6 +288,7 @@ public class Controller : MonoBehaviour
     {
         DeleteSpheres();
         StopAllCoroutines();
+        UIStatic.freeModeMaxScore.text = "0";
         enemySpeed = 12;
         Main.speed = 250;
         freeModeFlag = true;
