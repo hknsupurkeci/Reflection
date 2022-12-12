@@ -62,11 +62,13 @@ public class Controller : MonoBehaviour
     public static bool endFlag = false;
     public static bool freeModeFlag = false;
     public static int maxScore = 0;
+    public static Coroutine create;
     #endregion
 
     #region Sphere Create
     private void Awake()
     {
+        GameObject.FindObjectOfType<AdController>().InitializeAds();
         //PlayerPrefs.DeleteAll();
         maxScore = PlayerPrefs.GetInt("maxScore", 0);
         
@@ -84,6 +86,7 @@ public class Controller : MonoBehaviour
             }
         }
     }
+
     IEnumerator CreateSphere(Modes modes)
     {
         System.Random random = new System.Random();
@@ -191,9 +194,9 @@ public class Controller : MonoBehaviour
     #region UI buttons
     public void StartGame(int _id)
     {
+        AdController.current.bannerView.Hide();
         DeleteSpheres();
         StopAllCoroutines();
-
         RenderSettings.skybox = levels[_id - 1].skyboxMaterial;
         DynamicGI.UpdateEnvironment();
 
@@ -227,7 +230,7 @@ public class Controller : MonoBehaviour
             UI.collectMissionGreenMaxScore.text = greenBallCount.ToString();
             UI.collectMissionBonusBallMaxScore.text = bonusBallCount.ToString();
         }
-        StartCoroutine(CreateSphere(levels[_id-1].mode));
+        create = StartCoroutine(CreateSphere(levels[_id-1].mode));
     }
     public void Stages()
     {
@@ -253,6 +256,7 @@ public class Controller : MonoBehaviour
     }
     public void FreeModeEasy()
     {
+        AdController.current.bannerView.Hide();
         DeleteSpheres();
         StopAllCoroutines();
         UIStatic.freeModeMaxScore.text = "0";
@@ -260,10 +264,11 @@ public class Controller : MonoBehaviour
         Main.speed = 200;
         freeModeFlag = true;
         UI.startPanel.SetActive(false);
-        StartCoroutine(CreateSphere(Modes.Easy));
+        create = StartCoroutine(CreateSphere(Modes.Easy));
     }
     public void FreeModeNormal()
     {
+        AdController.current.bannerView.Hide();
         DeleteSpheres();
         StopAllCoroutines();
         UIStatic.freeModeMaxScore.text = "0";
@@ -271,10 +276,11 @@ public class Controller : MonoBehaviour
         Main.speed = 200;
         freeModeFlag = true;
         UI.startPanel.SetActive(false);
-        StartCoroutine(CreateSphere(Modes.Normal));
+        create = StartCoroutine(CreateSphere(Modes.Normal));
     }
     public void FreeModeHard()
     {
+        AdController.current.bannerView.Hide();
         DeleteSpheres();
         StopAllCoroutines();
         UIStatic.freeModeMaxScore.text = "0";
@@ -282,10 +288,11 @@ public class Controller : MonoBehaviour
         Main.speed = 200;
         freeModeFlag = true;
         UI.startPanel.SetActive(false);
-        StartCoroutine(CreateSphere(Modes.Hard));
+        create = StartCoroutine(CreateSphere(Modes.Hard));
     }
     public void FreeModeVeryHard()
     {
+        AdController.current.bannerView.Hide();
         DeleteSpheres();
         StopAllCoroutines();
         UIStatic.freeModeMaxScore.text = "0";
@@ -293,7 +300,7 @@ public class Controller : MonoBehaviour
         Main.speed = 250;
         freeModeFlag = true;
         UI.startPanel.SetActive(false);
-        StartCoroutine(CreateSphere(Modes.VeryHard));
+        create = StartCoroutine(CreateSphere(Modes.VeryHard));
     }
     //public void ScreenOne()
     //{

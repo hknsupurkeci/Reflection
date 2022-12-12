@@ -1,9 +1,10 @@
+using GoogleMobileAds.Api;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using GoogleMobileAds.Api;
 public class Main : MonoBehaviour
 {
     //public Controller.UIGameObjects UI;
@@ -50,6 +51,7 @@ public class Main : MonoBehaviour
     {
         if (other.gameObject.tag == "enemy")
         {
+            AdController.current.bannerView.Show();
             other.gameObject.GetComponent<SphereCollider>().enabled = false;
             coinAudioSource.PlayOneShot(gameOverSound, 0.7f);
             explosion.Play();
@@ -118,8 +120,11 @@ public class Main : MonoBehaviour
     }
     IEnumerator PassLevel()
     {
+        AdController.current.bannerView.Show();
+
         yield return new WaitForSeconds(3f);
 
+        AdController.current.interstitial.Show();
         Controller.nextLevelX.SetActive(false);
         MainScreenSet(true);
         StopAllCoroutines();
@@ -146,6 +151,7 @@ public class Main : MonoBehaviour
     {
         if (Controller.freeModeFlag)
         {
+            AdController.current.interstitial.Show();
             MainScreenSet(false);
             StopAllCoroutines();
             if (score > Controller.maxScore)
@@ -158,14 +164,17 @@ public class Main : MonoBehaviour
             {
                 Controller.UIStatic.freeModeMaxScore.text = Controller.maxScore.ToString();
             }
+            StopCoroutine(Controller.create);
             score = 0;
         }
         else
         {
             if (!isAdmob)
             {
+                AdController.current.interstitial.Show();
                 MainScreenSet(true);
                 StopAllCoroutines();
+                StopCoroutine(Controller.create);
             }
             else
             {
@@ -192,7 +201,12 @@ public class Main : MonoBehaviour
     public void AdButton()
     {
         //uzun reklam videosu buraya gelecek.
+        if (AdController.current.rewardedAd.IsLoaded())
+        {
+            AdController.current.rewardedAd.Show();
+        }
         //playerprefs içinde int bir count olacak nerede ölürse ölsün 2 ölmeden sonra reklam gelecek.
+        AdController.current.bannerView.Hide();
         StopCoroutine(stop);
         isAdmob = true;
         GameOverParameters();
