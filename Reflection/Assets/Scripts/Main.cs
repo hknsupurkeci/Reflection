@@ -103,6 +103,7 @@ public class Main : MonoBehaviour
                 //passLevel maxBallCount
                 if (Convert.ToInt32(Controller.UIStatic.collectMissionGreenMaxScore.text) == 0 && Convert.ToInt32(Controller.UIStatic.collectMissionBonusBallMaxScore.text) == 0)
                 {
+                    AdController.current.bannerView.Show();
                     speed = 0;
                     Controller.enemySpeed = 0;
                     Controller.nextEnableButton.enabled = true;
@@ -120,7 +121,6 @@ public class Main : MonoBehaviour
     }
     IEnumerator PassLevel()
     {
-        AdController.current.bannerView.Show();
 
         yield return new WaitForSeconds(3f);
 
@@ -151,7 +151,7 @@ public class Main : MonoBehaviour
     {
         if (Controller.freeModeFlag)
         {
-            AdController.current.interstitial.Show();
+            //AdController.current.interstitial.Show();
             MainScreenSet(false);
             StopAllCoroutines();
             if (score > Controller.maxScore)
@@ -204,14 +204,14 @@ public class Main : MonoBehaviour
         if (AdController.current.rewardedAd.IsLoaded())
         {
             AdController.current.rewardedAd.Show();
+            //playerprefs içinde int bir count olacak nerede ölürse ölsün 2 ölmeden sonra reklam gelecek.
+            AdController.current.bannerView.Hide();
+            StopCoroutine(stop);
+            isAdmob = true;
+            GameOverParameters();
+            isAdmob = false;
+            //continueObject.SetActive(false);
         }
-        //playerprefs içinde int bir count olacak nerede ölürse ölsün 2 ölmeden sonra reklam gelecek.
-        AdController.current.bannerView.Hide();
-        StopCoroutine(stop);
-        isAdmob = true;
-        GameOverParameters();
-        isAdmob = false;
-        //continueObject.SetActive(false);
     }
     public void NoThanksButton()
     {

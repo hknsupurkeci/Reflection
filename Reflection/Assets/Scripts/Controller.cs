@@ -68,7 +68,6 @@ public class Controller : MonoBehaviour
     #region Sphere Create
     private void Awake()
     {
-        GameObject.FindObjectOfType<AdController>().InitializeAds();
         //PlayerPrefs.DeleteAll();
         maxScore = PlayerPrefs.GetInt("maxScore", 0);
         
@@ -86,7 +85,10 @@ public class Controller : MonoBehaviour
             }
         }
     }
-
+    private void Start()
+    {
+        GameObject.FindObjectOfType<AdController>().InitializeAds();
+    }
     IEnumerator CreateSphere(Modes modes)
     {
         System.Random random = new System.Random();

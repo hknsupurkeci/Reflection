@@ -115,7 +115,7 @@ public class AdController : MonoBehaviour
 
     private void HandleUserEarnedReward(object sender, Reward e)
     {
-        //reward   
+        //reward
     }
 
     private void HandleRewardedAdOpening(object sender, EventArgs e)
