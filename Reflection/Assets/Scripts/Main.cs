@@ -8,6 +8,8 @@ using GoogleMobileAds.Api;
 public class Main : MonoBehaviour
 {
     //public Controller.UIGameObjects UI;
+    public GameObject passLevelConfetti;
+    public GameObject passLevelStars;
     [SerializeField] public ParticleSystem explosion;
     public AudioSource coinAudioSource;
     public AudioClip coinSound, gameOverSound;
@@ -121,9 +123,11 @@ public class Main : MonoBehaviour
     }
     IEnumerator PassLevel()
     {
-
-        yield return new WaitForSeconds(3f);
-
+        passLevelConfetti.SetActive(true);
+        passLevelStars.SetActive(true);
+        yield return new WaitForSeconds(4f);
+        passLevelConfetti.SetActive(false);
+        passLevelStars.SetActive(false);
         AdController.current.interstitial.Show();
         Controller.nextLevelX.SetActive(false);
         MainScreenSet(true);
