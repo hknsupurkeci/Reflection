@@ -121,6 +121,7 @@ public class Main : MonoBehaviour
             }
         }
     }
+    int adCount = 0;
     IEnumerator PassLevel()
     {
         passLevelConfetti.SetActive(true);
@@ -128,7 +129,9 @@ public class Main : MonoBehaviour
         yield return new WaitForSeconds(4f);
         passLevelConfetti.SetActive(false);
         passLevelStars.SetActive(false);
-        AdController.current.interstitial.Show();
+        adCount++;
+        if (adCount % 2 == 0)
+            AdController.current.interstitial.Show();
         Controller.nextLevelX.SetActive(false);
         MainScreenSet(true);
         StopAllCoroutines();
@@ -153,9 +156,11 @@ public class Main : MonoBehaviour
 
     private void GameOverParameters()
     {
+        adCount++;
         if (Controller.freeModeFlag)
         {
-            //AdController.current.interstitial.Show();
+            if (adCount % 2 == 0)
+                AdController.current.interstitial.Show();
             MainScreenSet(false);
             StopAllCoroutines();
             if (score > Controller.maxScore)
@@ -175,7 +180,8 @@ public class Main : MonoBehaviour
         {
             if (!isAdmob)
             {
-                AdController.current.interstitial.Show();
+                if(adCount % 2 == 0)
+                    AdController.current.interstitial.Show();
                 MainScreenSet(true);
                 StopAllCoroutines();
                 StopCoroutine(Controller.create);
