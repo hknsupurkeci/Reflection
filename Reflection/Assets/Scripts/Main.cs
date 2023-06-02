@@ -13,6 +13,7 @@ public class Main : MonoBehaviour
     [SerializeField] public ParticleSystem explosion;
     public AudioSource coinAudioSource;
     public AudioClip coinSound, gameOverSound;
+    public GameObject GetCoinParticelObject;
     Touch touch;
     bool wayFlag = true;
     public static float speed = 200;
@@ -68,6 +69,7 @@ public class Main : MonoBehaviour
         else if (other.gameObject.tag == "coin")
         {
             coinAudioSource.PlayOneShot(coinSound, 0.7f);
+            Instantiate(GetCoinParticelObject, transform.position, Quaternion.identity);
             Destroy(other.gameObject);
             if (!Controller.freeModeFlag)
             {
@@ -95,6 +97,7 @@ public class Main : MonoBehaviour
         else if (other.gameObject.tag == "bonusball")
         {
             coinAudioSource.PlayOneShot(coinSound, 0.7f);
+            Instantiate(GetCoinParticelObject, transform.position, Quaternion.identity);
             Destroy(other.gameObject);
             if (!Controller.freeModeFlag)
             {
