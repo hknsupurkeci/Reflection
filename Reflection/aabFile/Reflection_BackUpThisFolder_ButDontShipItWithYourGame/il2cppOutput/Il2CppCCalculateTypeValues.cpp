@@ -41573,6 +41573,12 @@ struct AdController_tBEDBF85880B1AA07634038B0FF32188C6ED968F5  : public MonoBeha
 	InterstitialAd_t41640B3957C2B66FA5F6F38A4805393B6B013FEC* ___interstitial_6;
 	// GoogleMobileAds.Api.RewardedAd AdController::rewardedAd
 	RewardedAd_t6D9A2A205821D735AB48061D75AC8DC4E3FA5D09* ___rewardedAd_7;
+	// System.String AdController::adUnitIdBanner
+	String_t* ___adUnitIdBanner_8;
+	// System.String AdController::adUnitInit
+	String_t* ___adUnitInit_9;
+	// System.String AdController::adUnitReward
+	String_t* ___adUnitReward_10;
 };
 
 // GoogleMobileAds.Common.AppStateEventClient
@@ -50120,8 +50126,8 @@ struct U3CU3Ec_t6B1E03D3E66640E49B4EF38CB6022D092D8DD916_StaticFields
 {
 	// AdController/<>c AdController/<>c::<>9
 	U3CU3Ec_t6B1E03D3E66640E49B4EF38CB6022D092D8DD916* ___U3CU3E9_0;
-	// System.Action`1<GoogleMobileAds.Api.InitializationStatus> AdController/<>c::<>9__4_0
-	Action_1_t61953204BFE962922BA541482E3ECC9BB03FC8EE* ___U3CU3E9__4_0_1;
+	// System.Action`1<GoogleMobileAds.Api.InitializationStatus> AdController/<>c::<>9__7_0
+	Action_1_t61953204BFE962922BA541482E3ECC9BB03FC8EE* ___U3CU3E9__7_0_1;
 };
 
 // AdController/<>c

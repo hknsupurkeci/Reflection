@@ -7055,6 +7055,12 @@ struct AdController_tBEDBF85880B1AA07634038B0FF32188C6ED968F5  : public MonoBeha
 	InterstitialAd_t41640B3957C2B66FA5F6F38A4805393B6B013FEC* ___interstitial_6;
 	// GoogleMobileAds.Api.RewardedAd AdController::rewardedAd
 	RewardedAd_t6D9A2A205821D735AB48061D75AC8DC4E3FA5D09* ___rewardedAd_7;
+	// System.String AdController::adUnitIdBanner
+	String_t* ___adUnitIdBanner_8;
+	// System.String AdController::adUnitInit
+	String_t* ___adUnitInit_9;
+	// System.String AdController::adUnitReward
+	String_t* ___adUnitReward_10;
 };
 
 // GoogleMobileAds.Common.AppStateEventClient
@@ -8780,8 +8786,8 @@ struct U3CU3Ec_t6B1E03D3E66640E49B4EF38CB6022D092D8DD916_StaticFields
 {
 	// AdController/<>c AdController/<>c::<>9
 	U3CU3Ec_t6B1E03D3E66640E49B4EF38CB6022D092D8DD916* ___U3CU3E9_0;
-	// System.Action`1<GoogleMobileAds.Api.InitializationStatus> AdController/<>c::<>9__4_0
-	Action_1_t61953204BFE962922BA541482E3ECC9BB03FC8EE* ___U3CU3E9__4_0_1;
+	// System.Action`1<GoogleMobileAds.Api.InitializationStatus> AdController/<>c::<>9__7_0
+	Action_1_t61953204BFE962922BA541482E3ECC9BB03FC8EE* ___U3CU3E9__7_0_1;
 };
 
 // AdController/<>c
@@ -10917,10 +10923,10 @@ IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable3342[7] =
 	static_cast<int32_t>(offsetof(CFX_LightIntensityFade_t5F771A047005EF5511B43C907B0DAA564F3E9745, ___duration_4)),static_cast<int32_t>(offsetof(CFX_LightIntensityFade_t5F771A047005EF5511B43C907B0DAA564F3E9745, ___delay_5)),static_cast<int32_t>(offsetof(CFX_LightIntensityFade_t5F771A047005EF5511B43C907B0DAA564F3E9745, ___finalIntensity_6)),static_cast<int32_t>(offsetof(CFX_LightIntensityFade_t5F771A047005EF5511B43C907B0DAA564F3E9745, ___baseIntensity_7)),static_cast<int32_t>(offsetof(CFX_LightIntensityFade_t5F771A047005EF5511B43C907B0DAA564F3E9745, ___autodestruct_8)),static_cast<int32_t>(offsetof(CFX_LightIntensityFade_t5F771A047005EF5511B43C907B0DAA564F3E9745, ___p_lifetime_9)),static_cast<int32_t>(offsetof(CFX_LightIntensityFade_t5F771A047005EF5511B43C907B0DAA564F3E9745, ___p_delay_10)),};
 IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable3343[2] = 
 {
-	static_cast<int32_t>(offsetof(U3CU3Ec_t6B1E03D3E66640E49B4EF38CB6022D092D8DD916_StaticFields, ___U3CU3E9_0)),static_cast<int32_t>(offsetof(U3CU3Ec_t6B1E03D3E66640E49B4EF38CB6022D092D8DD916_StaticFields, ___U3CU3E9__4_0_1)),};
-IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable3344[4] = 
+	static_cast<int32_t>(offsetof(U3CU3Ec_t6B1E03D3E66640E49B4EF38CB6022D092D8DD916_StaticFields, ___U3CU3E9_0)),static_cast<int32_t>(offsetof(U3CU3Ec_t6B1E03D3E66640E49B4EF38CB6022D092D8DD916_StaticFields, ___U3CU3E9__7_0_1)),};
+IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable3344[7] = 
 {
-	static_cast<int32_t>(offsetof(AdController_tBEDBF85880B1AA07634038B0FF32188C6ED968F5_StaticFields, ___current_4)),static_cast<int32_t>(offsetof(AdController_tBEDBF85880B1AA07634038B0FF32188C6ED968F5, ___bannerView_5)),static_cast<int32_t>(offsetof(AdController_tBEDBF85880B1AA07634038B0FF32188C6ED968F5, ___interstitial_6)),static_cast<int32_t>(offsetof(AdController_tBEDBF85880B1AA07634038B0FF32188C6ED968F5, ___rewardedAd_7)),};
+	static_cast<int32_t>(offsetof(AdController_tBEDBF85880B1AA07634038B0FF32188C6ED968F5_StaticFields, ___current_4)),static_cast<int32_t>(offsetof(AdController_tBEDBF85880B1AA07634038B0FF32188C6ED968F5, ___bannerView_5)),static_cast<int32_t>(offsetof(AdController_tBEDBF85880B1AA07634038B0FF32188C6ED968F5, ___interstitial_6)),static_cast<int32_t>(offsetof(AdController_tBEDBF85880B1AA07634038B0FF32188C6ED968F5, ___rewardedAd_7)),static_cast<int32_t>(offsetof(AdController_tBEDBF85880B1AA07634038B0FF32188C6ED968F5, ___adUnitIdBanner_8)),static_cast<int32_t>(offsetof(AdController_tBEDBF85880B1AA07634038B0FF32188C6ED968F5, ___adUnitInit_9)),static_cast<int32_t>(offsetof(AdController_tBEDBF85880B1AA07634038B0FF32188C6ED968F5, ___adUnitReward_10)),};
 IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable3345[6] = 
 {
 	static_cast<int32_t>(offsetof(BonusSphereColor_t36A79C1AA470C316648D6407B15B7F04521F3233, ___meshRenderer_4)),static_cast<int32_t>(offsetof(BonusSphereColor_t36A79C1AA470C316648D6407B15B7F04521F3233, ___lerpTime_5)),static_cast<int32_t>(offsetof(BonusSphereColor_t36A79C1AA470C316648D6407B15B7F04521F3233, ___myColors_6)),static_cast<int32_t>(offsetof(BonusSphereColor_t36A79C1AA470C316648D6407B15B7F04521F3233, ___colorIndex_7)),static_cast<int32_t>(offsetof(BonusSphereColor_t36A79C1AA470C316648D6407B15B7F04521F3233, ___t_8)),static_cast<int32_t>(offsetof(BonusSphereColor_t36A79C1AA470C316648D6407B15B7F04521F3233, ___len_9)),};
