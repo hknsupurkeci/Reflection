@@ -50,6 +50,8 @@ public class Controller : MonoBehaviour
 
     public UIGameObjects UI;
     public static UIGameObjects UIStatic;
+    public GameObject sound;
+
 
     public static GameObject nextLevelX;
     public static Button nextEnableButton;
@@ -206,6 +208,7 @@ public class Controller : MonoBehaviour
 
         UI.startPanel.SetActive(false);
         UI.stagesButton.SetActive(false);
+        sound.SetActive(false);
 
         activeLevel = _id;
         freeModeFlag = false;
@@ -238,23 +241,27 @@ public class Controller : MonoBehaviour
     {
         UI.startButtons.SetActive(false);
         UI.stagesButton.SetActive(true);
+        sound.SetActive(false);
     }
     public void StagesBack()
     {
         UI.startButtons.SetActive(true);
         UI.stagesButton.SetActive(false);
+        sound.SetActive(true);
     }
     public void FreeMode()
     {
         UI.startButtons.SetActive(false);
         UI.freeModeButtons.SetActive(true);
         UI.freeModMaxScoreButton.SetActive(true);
+        sound.SetActive(false);
     }
     public void FreeModeBack()
     {
         UI.startButtons.SetActive(true);
         UI.freeModeButtons.SetActive(false);
         UI.freeModMaxScoreButton.SetActive(false);
+        sound.SetActive(true);
     }
     public void FreeModeEasy()
     {
@@ -304,31 +311,10 @@ public class Controller : MonoBehaviour
         UI.startPanel.SetActive(false);
         create = StartCoroutine(CreateSphere(Modes.VeryHard));
     }
-    //public void ScreenOne()
-    //{
-    //    RenderSettings.skybox = skyboxes[0];
-    //    DynamicGI.UpdateEnvironment();
-    //}
-    //public void ScreenTwo()
-    //{
-    //    RenderSettings.skybox = skyboxes[1];
-    //    DynamicGI.UpdateEnvironment();
-    //}
-    //public void ScreenThree()
-    //{
-    //    RenderSettings.skybox = skyboxes[2];
-    //    DynamicGI.UpdateEnvironment();
-    //}
-    //public void ScreenFour()
-    //{
-    //    RenderSettings.skybox = skyboxes[3];
-    //    DynamicGI.UpdateEnvironment();
-    //}
-    //public void ScreenFive()
-    //{
-    //    RenderSettings.skybox = skyboxes[4];
-    //    DynamicGI.UpdateEnvironment();
-    //}
+    public void QuitApplication()
+    {
+        Application.Quit();
+    }
     #endregion
 
     private void DeleteSpheres()
