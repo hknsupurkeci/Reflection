@@ -133,7 +133,7 @@ public class Main : MonoBehaviour
         passLevelConfetti.SetActive(false);
         passLevelStars.SetActive(false);
         adCount++;
-        if (adCount % 2 == 0)
+        if (adCount % 3 == 0)
             AdController.current.interstitial.Show();
         Controller.nextLevelX.SetActive(false);
         MainScreenSet(true);
@@ -162,7 +162,7 @@ public class Main : MonoBehaviour
         adCount++;
         if (Controller.freeModeFlag)
         {
-            if (adCount % 2 == 0)
+            if (adCount % 3 == 0)
                 AdController.current.interstitial.Show();
             MainScreenSet(false);
             StopAllCoroutines();
@@ -183,7 +183,7 @@ public class Main : MonoBehaviour
         {
             if (!isAdmob)
             {
-                if(adCount % 2 == 0)
+                if(adCount % 3 == 0)
                     AdController.current.interstitial.Show();
                 MainScreenSet(true);
                 StopAllCoroutines();
